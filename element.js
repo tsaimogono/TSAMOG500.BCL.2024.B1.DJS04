@@ -30,7 +30,6 @@
 
  */
 
-
 /**
  * @type {HtmlElements}
  */
