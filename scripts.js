@@ -3,29 +3,41 @@ import { renderBookPreviews, setupGenreOptions, setupAuthorOptions, setThemeProp
 import { htmlElements } from './elements.js';
 
 let page = 1;
-let matches = books
+let matches = books;
 
-const starting = document.createDocumentFragment()
+htmlElements.search.dataSearchCancel.addEventListener('click', () => {
+    htmlElements.search.dataSearchOverlay.open = false;
+});
 
-for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
-    const element = document.createElement('button')
-    element.classList = 'preview'
-    element.setAttribute('data-preview', id)
+htmlElements.setting.dataSettingCancel.addEventListener('click', () => {
+    htmlElements.setting.dataSettingOverlay.open = false;
+});
 
-    element.innerHTML = `
-        <img
-            class="preview__image"
-            src="${image}"
-        />
-        
-        <div class="preview__info">
-            <h3 class="preview__title">${title}</h3>
-            <div class="preview__author">${authors[author]}</div>
-        </div>
-    `
+htmlElements.header.dataHeaderSearch.addEventListener('click', () => {
+    htmlElements.search.dataSearchOverlay.open = true ;
+    htmlElements.search.dataSearchTitle.focus();
+});
 
-    starting.appendChild(element)
-}
+htmlElements.header.dataHeaderSetting.addEventListener('click', () => {
+    htmlElements.setting.dataSettingOverlay.open = true ;
+});
+
+htmlElements.list.dataListClose.addEventListener('click', () => {
+    htmlElements.list.dataListActive.open = false;
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 document.querySelector('[data-list-items]').appendChild(starting)
 
