@@ -59,6 +59,27 @@ htmlElements.search.dataSearchForm.addEventListener('submit', (event) => {
             result.push(book)
         }
     }
+    
+
+    page = 1;
+    matches = result
+
+    if (result.length < 1) {
+        htmlElements.list.dataListMessage.classList.add('list__message_show')
+    } else {
+        htmlElements.list.dataListMessage.classList.remove('list__message_show')
+    }
+
+    htmlElements.list.dataListItem.innerHTML = ''
+    const newItems = document.createDocumentFragment();
+    renderBookPreviews(newItems, result.slice(0, BOOKS_PER_PAGE));
+    
+    showMoreButton(page, matches);
+
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    htmlElements.search.dataSearchOverlay.open = false;
+});
+
 
 
 
