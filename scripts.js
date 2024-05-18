@@ -104,10 +104,12 @@ function initialization() {
     const starting = document.createDocumentFragment();
     renderBookPreviews(starting, matches.slice(0, BOOKS_PER_PAGE));
 
-    setupAuthorOptions();
-    setupGenreOptions();
-    showMoreButton(page, matches);
+    setupAuthorOptions(); // Set up author options in the search form
+    setupGenreOptions();// Set up genre options in the search form
+    showMoreButton(page, matches); // Update the show more button
 };
+
+
 
 // Call the initialization function and apply the preferred theme
 initialization();
