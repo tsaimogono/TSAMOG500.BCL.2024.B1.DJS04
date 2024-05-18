@@ -80,6 +80,29 @@ htmlElements.search.dataSearchForm.addEventListener('submit', (event) => {
     htmlElements.search.dataSearchOverlay.open = false;
 });
 
+htmlElements.list.dataListButton.addEventListener('click', () => {
+    page += 1;
+    const fragment = document.createDocumentFragment();
+    const newBooks = matches.slice(page * BOOKS_PER_PAGE, (page + 1) * BOOKS_PER_PAGE);
+    renderBookPreviews(fragment, newBooks);
+    showMoreButton(page, matches);
+});
+
+htmlElements.list.dataListItem.addEventListener('click', (event) => {
+    handleListItemOnClick(event);
+});
+
+function initialization() {
+    const starting = document.createDocumentFragment();
+    renderBookPreviews(starting, matches.slice(0, BOOKS_PER_PAGE));
+
+    setupAuthorOptions();
+    setupGenreOptions();
+    showMoreButton(page, matches);
+};
+
+initialization();
+applyPreferredTheme();
 
 
 
