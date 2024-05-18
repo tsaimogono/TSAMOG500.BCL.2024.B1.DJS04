@@ -68,4 +68,4 @@ Make sure to submit your project to the LMS on the DJS03 Project Tab.
 
 ### Improvents
 
-- Error Handling:Implement robust error handling to manage issues gracefully and provide feedback to the user.
+- Error Handling:Implement robust error handling to manage issues gracefully and provide feedback to the user
