@@ -1,3 +1,4 @@
+// Import data, utility functions, and HTML elements
 import { books, authors, genres, BOOKS_PER_PAGE } from './data.js'
 import { renderBookPreviews, setupGenreOptions, setupAuthorOptions, setThemeProperties, applyPreferredTheme, showMoreButton, handleListItemOnClick } from './utility.js';
 import { htmlElements } from './elements.js';
@@ -5,6 +6,7 @@ import { htmlElements } from './elements.js';
 let page = 1;
 let matches = books;
 
+// Add event listeners for search cancel, settings cancel, search, and settings buttons
 htmlElements.search.dataSearchCancel.addEventListener('click', () => {
     htmlElements.search.dataSearchOverlay.open = false;
 });
@@ -22,10 +24,12 @@ htmlElements.header.dataHeaderSetting.addEventListener('click', () => {
     htmlElements.setting.dataSettingOverlay.open = true ;
 });
 
+// Add event listener for closing the list overlay
 htmlElements.list.dataListClose.addEventListener('click', () => {
     htmlElements.list.dataListActive.open = false;
 });
 
+// Handle form submission for setting theme properties
 htmlElements.setting.dataSettingForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -36,12 +40,14 @@ htmlElements.setting.dataSettingForm.addEventListener('submit', (event) => {
     htmlElements.setting.dataSettingOverlay.open = false;
 });
 
+
+// Handle form submission for search, filtering results by title, author, and genre
 htmlElements.search.dataSearchForm.addEventListener('submit', (event) => {
     event.preventDefault()
     const formData = new FormData(event.target)
     const filters = Object.fromEntries(formData)
     const result = []
-
+// Filter books based on the search criteria
     for (const book of books) {
         let genreMatch = filters.genre === 'any'
 
@@ -59,9 +65,10 @@ htmlElements.search.dataSearchForm.addEventListener('submit', (event) => {
         }
     }
     
-    page = 1;
-    matches = result
+    page = 1;// Reset the page to 1
+    matches = result;// Update matches to the filtered results
 
+    // Show or hide the no results message
     if (result.length < 1) {
         htmlElements.list.dataListMessage.classList.add('list__message_show')
     } else {
@@ -78,6 +85,7 @@ htmlElements.search.dataSearchForm.addEventListener('submit', (event) => {
     htmlElements.search.dataSearchOverlay.open = false;
 });
 
+// Event listener for the show more button
 htmlElements.list.dataListButton.addEventListener('click', () => {
     page += 1;
     const fragment = document.createDocumentFragment();
@@ -86,10 +94,12 @@ htmlElements.list.dataListButton.addEventListener('click', () => {
     showMoreButton(page, matches);
 });
 
+// Event listener for book list item clicks
 htmlElements.list.dataListItem.addEventListener('click', (event) => {
     handleListItemOnClick(event);
 });
 
+// Initialization function to set up the application
 function initialization() {
     const starting = document.createDocumentFragment();
     renderBookPreviews(starting, matches.slice(0, BOOKS_PER_PAGE));
@@ -99,6 +109,7 @@ function initialization() {
     showMoreButton(page, matches);
 };
 
+// Call the initialization function and apply the preferred theme
 initialization();
 applyPreferredTheme();
 
