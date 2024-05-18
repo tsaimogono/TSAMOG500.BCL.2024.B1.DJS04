@@ -68,3 +68,88 @@ export const setupAuthorOptions = () => {
 
     htmlElements.search.dataSearchAuthor.appendChild(authorsHtml)
 };
+
+/**
+ * Creates an option element.
+ * @param {string} value - The value of the option.
+ * @param {string} name - The display name of the option.
+ * @returns {HTMLOptionElement} The option element.
+ */
+export function createOptionElement(value, name) {
+    const element = document.createElement('option');
+    element.value = value;
+    element.innerText = name;
+    return element;
+};
+
+/**
+ * Sets the theme properties.
+ * @param {string | File } theme - The theme to set ('night' or 'day').
+ */
+export const setThemeProperties = (theme) => {
+    if (theme === 'night') {
+        document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
+        document.documentElement.style.setProperty('--color-light', '10, 10, 20');
+    } else {
+        document.documentElement.style.setProperty('--color-dark', '10, 10, 20');
+        document.documentElement.style.setProperty('--color-light', '255, 255, 255');
+    };
+};
+
+/**
+ * Applies the user's preferred theme based on their system settings.
+ */
+export const applyPreferredTheme = () => {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        htmlElements.setting.dataSettingTheme.value = 'night';
+        setThemeProperties('night');
+    } else {
+        htmlElements.setting.dataSettingTheme.value = 'day';
+        setThemeProperties('day');
+    };
+};
+
+/**
+ * Updates the "Show More" button text and state.
+ */
+export function showMoreButton(page, matches) {
+    htmlElements.list.dataListButton.innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
+    let remainingBooks = matches.length - (page * BOOKS_PER_PAGE);
+    htmlElements.list.dataListButton.disabled = remainingBooks <= 0
+
+    htmlElements.list.dataListButton.innerHTML = `
+        <span>Show more</span>
+        <span class="list__remaining"> (${remainingBooks > 0 ? remainingBooks : 0})</span>
+    `;
+};
+
+export const handleListItemOnClick = (event) => {
+    const pathArray = Array.from(event.path || event.composedPath());
+    let active = null;
+
+    for (const node of pathArray) {
+        if (active) break;
+
+        if (node?.dataset?.preview) {
+            let result = null
+    
+            for (const singleBook of books) {
+                if (result) break;
+                if (singleBook.id === node?.dataset?.preview) result = singleBook
+            } 
+        
+            active = result
+        };
+    };
+    
+    if (active) {
+        htmlElements.list.dataListActive.open = true;
+        htmlElements.list.dataListBlur.src = active.image;
+        htmlElements.list.dataListImage.src = active.image;
+        htmlElements.list.dataListTitle.innerText = active.title;
+        htmlElements.list.dataListSubtitle.innerText = `${authors[active.author]} (${new Date(active.published).getFullYear()})`;
+        htmlElements.list.dataListDescription.innerText = active.description;
+    };
+}
+
+
